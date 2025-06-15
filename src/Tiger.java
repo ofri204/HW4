@@ -1,5 +1,5 @@
 public class Tiger  extends Animal{
-    public Tiger(int dominanceLevel) {
+    public Tiger() {
         super(4);
     }
 }
