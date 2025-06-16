@@ -1,11 +1,11 @@
 import java.util.Iterator;
 
 public class SpeciesQueue <T extends Comparable<T>> implements Iterable<T> {
-    private T[] animals;
+    private T[] queue;
     private int count;
 
     public SpeciesQueue() {
-        this.animals = (T[]) new Comparable[10];
+        this.queue = (T[]) new Comparable[10];
         this.count = 0;
     }
 
@@ -24,65 +24,68 @@ public class SpeciesQueue <T extends Comparable<T>> implements Iterable<T> {
 
         @Override
         public T next() {
-            return animals[index++];
+            return queue[index++];
         }
     }
 
-    private void validateInput(T animal) {
-        if (animal == null) {
+    private void validateInput(T type) {
+        if (type == null) {
             throw new InvalidInputException();
         }
     }
 
     private void arraySizeCheck() {
-        if (count == animals.length) {
+        if (count == queue.length) {
             expandArraySizeBy2();
         }
     }
 
-    private int findInsertionIndex(T animal) {
+    private int findInsertionIndex(T type) {
         int insertIdx = 0;
-        int sameAnimalStartIdx = -1;
+        int sameTypeStartIdx = -1;
 
         while (insertIdx < count) {
-            T current = animals[insertIdx];
-            int cmp = animal.compareTo(current);
+            T current = queue[insertIdx];
+            if (current == null) {
+                break;
+            }
+            int cmp = type.compareTo(current);
 
             if (cmp > 0) {
                 break;
-            } else if (cmp == 0 && animal.getClass()==(current.getClass())) {
-                sameAnimalStartIdx = insertIdx;
+            } else if (cmp == 0 && type.getClass()==(current.getClass())) {
+                sameTypeStartIdx = insertIdx;
                 break;
             }
 
             insertIdx++;
         }
 
-        if (sameAnimalStartIdx != -1) {
-            return sameAnimalStartIdx;
+        if (sameTypeStartIdx != -1) {
+            return sameTypeStartIdx;
         }
 
         return insertIdx;
     }
 
-    private void insertAtSpecifiedIndex(int index, T animal) {
+    private void insertAtSpecifiedIndex(int index, T type) {
         for (int i = count; i > index; i--) {
-            animals[i] = animals[i - 1];
+            queue[i] = queue[i - 1];
         }
-        animals[index] = animal;
+        queue[index] = type;
         count++;
     }
 
-    public void add(T animal) {
-        validateInput(animal);
+    public void add(T type) {
+        validateInput(type);
         arraySizeCheck();
-        int insertIdx = findInsertionIndex(animal);
-        insertAtSpecifiedIndex(insertIdx, animal);
+        int insertIdx = findInsertionIndex(type);
+        insertAtSpecifiedIndex(insertIdx, type);
     }
 
 
     private T[] createDoubleSizedArray() {
-        return (T[]) new Animal[animals.length * 2];
+        return (T[]) new Comparable[queue.length * 2];
     }
 
     private int findStartIndexToCopyFrom(T[] newArray) {
@@ -91,15 +94,15 @@ public class SpeciesQueue <T extends Comparable<T>> implements Iterable<T> {
 
     private void copyToTheNewArray(T[] newArray, int startIdx) {
         for (int i = 0; i < count; i++) {
-            newArray[startIdx + i] = (T) animals[i];
+            newArray[startIdx + i] = (T) queue[i];
         }
     }
 
     private void expandArraySizeBy2() {
-        T[] newAnimals = createDoubleSizedArray();
-        int startIdx = findStartIndexToCopyFrom(newAnimals);
-        copyToTheNewArray(newAnimals, startIdx);
-        animals = newAnimals;
+        T[] newQueue = createDoubleSizedArray();
+        int startIdx = findStartIndexToCopyFrom(newQueue);
+        copyToTheNewArray(newQueue, startIdx);
+        queue = newQueue;
     }
 
 }
