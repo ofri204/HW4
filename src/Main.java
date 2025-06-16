@@ -2,23 +2,11 @@ public class Main {
     public static void main(String[] args) {
         SpeciesQueue<Animal> animalQueue = new SpeciesQueue<>();
 
-        animalQueue.add(new Tiger());
-        animalQueue.add(new Lion());
-        animalQueue.add(new Lion());
-        animalQueue.add(new Tiger());
-        animalQueue.add(new Snake());
-        animalQueue.add(new Tiger());
-        animalQueue.add(new Tiger());
-        animalQueue.add(new Tiger());
-        animalQueue.add(new Tiger());
-        animalQueue.add(new Tiger());
-        animalQueue.add(new Tiger());
-        animalQueue.add(new Tiger());
-        animalQueue.add(new Tiger());
-        animalQueue.add(new Tiger());
-        animalQueue.add(new Snake());
-        animalQueue.add(new Tiger());
-        animalQueue.add(new Tiger());
+        for (int i=0;  i<20 ; i++){
+            animalQueue.add(new Tiger());
+            animalQueue.add(new Lion());
+        }
+
 
         for (Animal animal : animalQueue) {
             if (animal == null) {

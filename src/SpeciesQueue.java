@@ -99,9 +99,10 @@ public class SpeciesQueue <T extends Comparable<T>> implements Iterable<T> {
     }
 
     private void expandArraySizeBy2() {
-        T[] newQueue = createDoubleSizedArray();
-        int startIdx = findStartIndexToCopyFrom(newQueue);
-        copyToTheNewArray(newQueue, startIdx);
+        T[] newQueue = (T[]) new Comparable[queue.length * 2];
+        for (int i = 0; i < count; i++) {
+            newQueue[i] = queue[i];
+        }
         queue = newQueue;
     }
 
