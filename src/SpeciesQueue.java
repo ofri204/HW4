@@ -1,6 +1,6 @@
 import java.util.Iterator;
 
-public class SpeciesQueue <T extends Comparable<T>> implements Iterable<T> {
+public class SpeciesQueue <T extends Comparable<T> & Cloneable> implements Iterable<T> {
     private T[] queue;
     private int count;
 
@@ -13,7 +13,6 @@ public class SpeciesQueue <T extends Comparable<T>> implements Iterable<T> {
     public Iterator<T> iterator() {
         return new SpeciesQueueIterator();
     }
-
     private class SpeciesQueueIterator implements Iterator<T> {
         private int index = 0;
 
@@ -45,15 +44,15 @@ public class SpeciesQueue <T extends Comparable<T>> implements Iterable<T> {
         int sameTypeStartIdx = -1;
 
         while (insertIdx < count) {
-            T current = queue[insertIdx];
-            if (current == null) {
+            T temp = queue[insertIdx];
+            if (temp == null) {
                 break;
             }
-            int cmp = type.compareTo(current);
+            int resultComparison = type.compareTo(temp);
 
-            if (cmp > 0) {
+            if (resultComparison > 0) {
                 break;
-            } else if (cmp == 0 && type.getClass()==(current.getClass())) {
+            } else if (resultComparison == 0 && type.getClass()==(temp.getClass())) {
                 sameTypeStartIdx = insertIdx;
                 break;
             }
@@ -88,22 +87,17 @@ public class SpeciesQueue <T extends Comparable<T>> implements Iterable<T> {
         return (T[]) new Comparable[queue.length * 2];
     }
 
-    private int findStartIndexToCopyFrom(T[] newArray) {
-        return newArray.length / 2;
-    }
-
-    private void copyToTheNewArray(T[] newArray, int startIdx) {
+    private void copyToTheNewArray(T[] newArray) {
         for (int i = 0; i < count; i++) {
-            newArray[startIdx + i] = (T) queue[i];
+            newArray[i] = queue[i];
         }
     }
 
     private void expandArraySizeBy2() {
-        T[] newQueue = (T[]) new Comparable[queue.length * 2];
-        for (int i = 0; i < count; i++) {
-            newQueue[i] = queue[i];
-        }
+        T[] newQueue = createDoubleSizedArray();
+        copyToTheNewArray(newQueue);
         queue = newQueue;
-    }
 
+
+    }
 }

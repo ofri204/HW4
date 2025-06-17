@@ -1,4 +1,4 @@
-public abstract class Animal implements Comparable<Animal> {
+public abstract class Animal implements Comparable<Animal> ,Cloneable {
     private final int dominanceLevel;
 
     public Animal(int dominanceLevel) {
