@@ -179,25 +179,37 @@ public class SpeciesQueue <T extends Comparable<T> & Cloneable> implements Itera
     }
 
     /**
+     * A helper method for method {@link #remove()}
+     * Shifts all elements in the queue one location to the left.
+     **/
+    private void shiftElementsLeft() {
+        for (int i = 1; i < count; i++) {
+            queue[i - 1] = queue[i];
+        }
+    }
+
+    /**
+     * A helper method for method {@link #remove()}
+     * changes the last element in the queue to null after removing an element
+     * This method is called after shifting the elements to the left, in order to remove duplicate elements
+     */
+    private void changeMostRightElementtoNull() {
+        queue[count - 1] = null;
+    }
+
+    /**
      * Removes and returns the first element in the queue
      *
      * @return the first element in the queue
      * @throws EmptyQueueException if the queue is empty
      **/
     public T remove() {
-        if (count == 0) {
+        if (isEmpty()) {
             throw new EmptyQueueException();
         }
-
         T firstElement = queue[0];
-
-        for (int i = 1; i < count; i++) {
-            queue[i - 1] = queue[i];
-        }
-
-        queue[count - 1] = null;
-        count--;
-
+        shiftElementsLeft();
+        changeMostRightElementtoNull();
         return firstElement;
     }
 
