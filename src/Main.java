@@ -2,10 +2,10 @@ public class Main {
     public static void main(String[] args) {
         SpeciesQueue<Animal> animalQueue = new SpeciesQueue<>();
 
-        for (int i=0;  i<20 ; i++){
+        for (int i=0; i<21 ; i++) {
             animalQueue.add(new Tiger());
-            animalQueue.add(new Lion());
         }
+        animalQueue.remove();
 
 
         for (Animal animal : animalQueue) {

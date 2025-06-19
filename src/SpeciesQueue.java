@@ -177,4 +177,36 @@ public class SpeciesQueue <T extends Comparable<T> & Cloneable> implements Itera
 
 
     }
+
+    /**
+     * Removes and returns the first element in the queue
+     *
+     * @return the first element in the queue
+     * @throws EmptyQueueException if the queue is empty
+     **/
+    public T remove() {
+        if (count == 0) {
+            throw new EmptyQueueException();
+        }
+
+        T firstElement = queue[0];
+
+        for (int i = 1; i < count; i++) {
+            queue[i - 1] = queue[i];
+        }
+
+        queue[count - 1] = null;
+        count--;
+
+        return firstElement;
+    }
+
+    /**
+     * Checks if the queue is empty
+     *
+     * @return true if the queue does not have any elements, and false otherwise
+     **/
+    public boolean isEmpty() {
+        return count == 0;
+    }
 }
