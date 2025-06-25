@@ -25,7 +25,7 @@ public class Ark {
     public void enterToArk() {
         if(this.isAnimalQueueNotEmpty()){
             Animal firstAnimalInQueue= animalQueue.remove();
-            System.out.println( firstAnimalInQueue.getClass().getName() + " entered the ark");
+            System.out.println("A " + firstAnimalInQueue.getClass().getName() + " entered the ark");
         }
     }
 
@@ -40,11 +40,10 @@ public class Ark {
     public void showQueue() {
         if( this.isAnimalQueueNotEmpty() ){
             StringBuilder queueStr = new StringBuilder();
-            for( Animal a : this.animalQueue){
+            for( Animal a : this.animalQueue ) {
                 queueStr.append(a.getClass().getName()).append(", ");
             }
-            queueStr.delete( queueStr.length()-2, queueStr.length() - 1);
-            System.out.println( queueStr );
+            System.out.println( queueStr.substring( 0, queueStr.length() - 2) );
         }
     }
 

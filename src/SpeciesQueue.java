@@ -238,8 +238,7 @@ public class SpeciesQueue <T extends Comparable<T> > implements Iterable<T>, Clo
     public SpeciesQueue<T> clone() {
         try{
             SpeciesQueue<T> copy = (SpeciesQueue<T>)super.clone();
-            T[] newC  = this.queueCopy();
-            copy.replaceQueue( (T[])newC );
+            copy.replaceQueue( this.queueCopy() );
             return copy;
         } catch (ClassCastException | CloneNotSupportedException | NoSuchMethodException e  ){
             return null;
