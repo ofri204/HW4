@@ -251,25 +251,22 @@ public class SpeciesQueue <T extends Comparable<T> > implements Iterable<T>, Clo
         this.queue = newQueue;
     }
 
-    private T[] queueCopy() {
+    private T[] queueCopy() throws CloneNotSupportedException{
 
         int queueLen = this.queue.length;
-        Object[] copy = (T[])new Object[queueLen];
-
+        Object[] copy = new Comparable[queueLen];
 
         for(int i = 0; i < queueLen; i++){
             T element = this.queue[i];
             if(element != null){
                 try{
-                    if( element instanceof Cloneable){
-                        copy[i] = (T)element.clone();
-                    }
+                    copy[i] = element.clone();
                 } catch ( CloneNotSupportedException e) {
                     copy[i] = null;
                 }
             }
        }
-        return copy;
+        return (T[])copy;
     }
 
 }
