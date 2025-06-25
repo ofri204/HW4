@@ -1,3 +1,6 @@
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.Iterator;
 
 /**
@@ -7,7 +10,7 @@ import java.util.Iterator;
  *
  * @param <T> the type of elements held in this queue
  **/
-public class SpeciesQueue <T extends Comparable<T> & Cloneable> implements Iterable<T> {
+public class SpeciesQueue <T extends Comparable<T> > implements Iterable<T>, Cloneable  {
     private T[] queue;
     private int count;
 
@@ -210,6 +213,7 @@ public class SpeciesQueue <T extends Comparable<T> & Cloneable> implements Itera
         T firstElement = queue[0];
         shiftElementsLeft();
         changeMostRightElementtoNull();
+        count--;
         return firstElement;
     }
 
@@ -231,21 +235,39 @@ public class SpeciesQueue <T extends Comparable<T> & Cloneable> implements Itera
     }
 
     @Override
-    public SpeciesQueue<T> clone(){
-        SpeciesQueue<T> copy = null;
+    public SpeciesQueue<T> clone() {
         try{
-            copy = (SpeciesQueue<T>)super.clone();
-        } catch ( CloneNotSupportedException | ClassCastException e  ){
+            SpeciesQueue<T> copy = (SpeciesQueue<T>) super.clone();
+            T[] newQueue = this.queueCopy();
+            copy.replaceQueue( newQueue );
+            return copy;
+
+        } catch (ClassCastException | CloneNotSupportedException e  ){
             return null;
         }
-        return null;
     }
 
-    private Cloneable[] animalsQueueCopy(){
+    private void replaceQueue(T[] newQueue){
+        this.queue = newQueue;
+    }
+
+    private T[] queueCopy() {
+
         int queueLen = this.queue.length;
-        Cloneable[] copy = new Cloneable[queueLen];
-        for(int i = 0; i < queueLen - count; i++){
-            copy[i] = this.queue[i].clone();
+        Object[] copy = (T[])new Object[queueLen];
+
+
+        for(int i = 0; i < queueLen; i++){
+            T element = this.queue[i];
+            if(element != null){
+                try{
+                    if( element instanceof Cloneable){
+                        copy[i] = (T)element.clone();
+                    }
+                } catch ( CloneNotSupportedException e) {
+                    copy[i] = null;
+                }
+            }
        }
         return copy;
     }

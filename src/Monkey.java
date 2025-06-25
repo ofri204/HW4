@@ -3,7 +3,7 @@
  * with a fixed dominance level of 3.
  **/
 public class Monkey extends Animal {
-    public Monkey(int dominanceLevel) {
+    public Monkey() {
         super(3);
     }
 }

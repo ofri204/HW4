@@ -9,7 +9,7 @@ public class Ark {
      * Constructs a new empty Ark.
      **/
     public Ark() {
-        this.animalQueue= new SpeciesQueue<>();
+        this.animalQueue= new SpeciesQueue<Animal>();
     }
 
     /**

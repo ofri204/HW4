@@ -38,13 +38,18 @@ public abstract class Animal implements Comparable<Animal> ,Cloneable {
     }
 
     @Override
-    protected Animal clone() throws CloneNotSupportedException {
+    public Animal clone() throws CloneNotSupportedException {
         try{
             return (Animal)super.clone();
         }
         catch (CloneNotSupportedException e){
             return null;
         }
+    }
+
+    @Override
+    public String toString(){
+        return this.getClass().getName();
     }
 
 }
