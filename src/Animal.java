@@ -37,4 +37,14 @@ public abstract class Animal implements Comparable<Animal> ,Cloneable {
         return this.getDominanceLevel()-other.getDominanceLevel();
     }
 
+    @Override
+    protected Animal clone() throws CloneNotSupportedException {
+        try{
+            return (Animal)super.clone();
+        }
+        catch (CloneNotSupportedException e){
+            return null;
+        }
+    }
+
 }

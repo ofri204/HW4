@@ -4,13 +4,12 @@
  * based on their dominance level and type.
  **/
 public class Ark {
-    private SpeciesQueue<Animal> animalQueue;
-
+    private final SpeciesQueue<Animal> animalQueue;
     /**
      * Constructs a new empty Ark.
      **/
     public Ark() {
-        animalQueue= new SpeciesQueue<>();
+        this.animalQueue= new SpeciesQueue<>();
     }
 
     /**
@@ -19,7 +18,34 @@ public class Ark {
      * @param animal the animal to be added to the ark
      * @throws InvalidInputException if the animal is null
      */
-    public void add(Animal animal) {
+    public void add(Animal animal) throws InvalidInputException {
         animalQueue.add(animal);
     }
+
+    public void enterToArk() {
+        if(this.isAnimalQueueNotEmpty()){
+            Animal firstAnimalInQueue= animalQueue.remove();
+            System.out.println( firstAnimalInQueue.getClass().getName() + " entered the ark");
+        }
+    }
+
+    private boolean isAnimalQueueNotEmpty(){ return !this.animalQueue.isEmpty(); }
+
+    public void enterAllToArk() {
+        while(this.isAnimalQueueNotEmpty()){
+            this.enterToArk();
+        }
+    }
+
+    public void showQueue() {
+        if( this.isAnimalQueueNotEmpty() ){
+            StringBuilder queueStr = new StringBuilder();
+            for( Animal a : this.animalQueue){
+                queueStr.append(a.getClass().getName()).append(", ");
+            }
+            queueStr.delete( queueStr.length()-2, queueStr.length() - 1);
+            System.out.println( queueStr );
+        }
+    }
+
 }

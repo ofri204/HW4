@@ -221,4 +221,33 @@ public class SpeciesQueue <T extends Comparable<T> & Cloneable> implements Itera
     public boolean isEmpty() {
         return count == 0;
     }
+
+    public T peek() throws EmptyQueueException{
+        return this.queue[ queue.length - 1] ;
+    }
+
+    public int size(){
+        return this.count;
+    }
+
+    @Override
+    public SpeciesQueue<T> clone(){
+        SpeciesQueue<T> copy = null;
+        try{
+            copy = (SpeciesQueue<T>)super.clone();
+        } catch ( CloneNotSupportedException | ClassCastException e  ){
+            return null;
+        }
+        return null;
+    }
+
+    private Cloneable[] animalsQueueCopy(){
+        int queueLen = this.queue.length;
+        Cloneable[] copy = new Cloneable[queueLen];
+        for(int i = 0; i < queueLen - count; i++){
+            copy[i] = this.queue[i].clone();
+       }
+        return copy;
+    }
+
 }
