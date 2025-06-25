@@ -275,20 +275,23 @@ public class SpeciesQueue <T extends Comparable<T> > implements Iterable<T>, Clo
         int queueLen = this.queue.length;
         Object[] copy = new Comparable[queueLen];
 
-        for(int i = 0; i < queueLen; i++){
-            T element = this.queue[i];
+        if( !this.isEmpty()){
+            for(int i = 0; i < queueLen; i++){
+                T element = this.queue[i];
 
-            //checks if the current none null element can be cloned
-            if(element != null){
-                try{
-                    T clonedElement = (T)(element.getClass().getMethod("clone").invoke(element));
-                    copy[i] = clonedElement;
-                } catch (Exception e) {
-                    //the element cannot be copied, so it will be null
-                    copy[i] = null;
+                //checks if the current none null element can be cloned
+                if(element != null){
+                    try{
+                        T clonedElement = (T)(element.getClass().getMethod("clone").invoke(element));
+                        copy[i] = clonedElement;
+                    } catch (Exception e) {
+                        //the element cannot be copied, so it will be null
+                        copy[i] = null;
+                    }
                 }
             }
-       }
+        }
+
         return (T[])copy;
     }
 }

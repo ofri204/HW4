@@ -1,7 +1,7 @@
 public class Main {
     public static void main(String[] args) {
         //test_1();
-        System.out.println("\n-------------------------\n");
+        /*System.out.println("\n-------------------------\n");
         test_2();
         System.out.println("\n-------------------------\n");
         test_3();
@@ -9,7 +9,7 @@ public class Main {
         test_4();
         System.out.println("\n-------------------------\n");
         test_5();
-        System.out.println("\n-------------------------\n");
+        System.out.println("\n-------------------------\n");*/
         test_6();
 
     }
@@ -157,12 +157,11 @@ public class Main {
         SpeciesQueue<Animal> queue = new SpeciesQueue<>();
 
         // Add some animals to the queue
-        queue.add(new Lion());
-        queue.add(new Tiger());
-        queue.add(new Lion());
+
 
         // Clone the queue
         SpeciesQueue<Animal> clonedQueue = queue.clone();
+        clonedQueue.add(new Zebra());
 
         // Show the original and cloned queue
         System.out.println("Original queue:");
@@ -172,7 +171,7 @@ public class Main {
 
         // Remove an animal from the cloned queue and show the state again
         clonedQueue.remove();
-        System.out.println("Cloned queue after removal:");
+        System.out.println("ClException in thread \"main\" EmptyQueueException\noned queue after removal:");
         showQueueState(clonedQueue);
 
         System.out.println("queue after removal from cloned:");
