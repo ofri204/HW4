@@ -3,7 +3,7 @@
  * All animals that extend this class are comparable according to their dominance level
  * and cloneable.
  **/
-public abstract class Animal implements Comparable<Animal> ,Cloneable {
+public abstract class Animal implements Comparable<Animal>, Cloneable {
     private final int dominanceLevel;
 
     /**

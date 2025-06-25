@@ -10,7 +10,7 @@ import java.util.Iterator;
  *
  * @param <T> the type of elements held in this queue
  **/
-public class SpeciesQueue <T extends Comparable<T> > implements Iterable<T>, Cloneable  {
+public class SpeciesQueue <T extends Comparable<T> > implements Iterable<T>, Cloneable{
     private T[] queue;
     private int count;
 
@@ -237,12 +237,11 @@ public class SpeciesQueue <T extends Comparable<T> > implements Iterable<T>, Clo
     @Override
     public SpeciesQueue<T> clone() {
         try{
-            SpeciesQueue<T> copy = (SpeciesQueue<T>) super.clone();
-            T[] newQueue = this.queueCopy();
-            copy.replaceQueue( newQueue );
+            SpeciesQueue<T> copy = (SpeciesQueue<T>)super.clone();
+            T[] newC  = this.queueCopy();
+            copy.replaceQueue( (T[])newC );
             return copy;
-
-        } catch (ClassCastException | CloneNotSupportedException e  ){
+        } catch (ClassCastException | CloneNotSupportedException | NoSuchMethodException e  ){
             return null;
         }
     }
@@ -251,7 +250,7 @@ public class SpeciesQueue <T extends Comparable<T> > implements Iterable<T>, Clo
         this.queue = newQueue;
     }
 
-    private T[] queueCopy() throws CloneNotSupportedException{
+    private T[] queueCopy() throws CloneNotSupportedException, NoSuchMethodException {
 
         int queueLen = this.queue.length;
         Object[] copy = new Comparable[queueLen];
@@ -260,13 +259,14 @@ public class SpeciesQueue <T extends Comparable<T> > implements Iterable<T>, Clo
             T element = this.queue[i];
             if(element != null){
                 try{
-                    copy[i] = element.clone();
-                } catch ( CloneNotSupportedException e) {
+                    T clonedElement = (T)(element.getClass().getMethod("clone").invoke(element));
+                    copy[i] = clonedElement;
+                } catch (NoSuchMethodException | IllegalAccessException |
+                         InvocationTargetException e) {
                     copy[i] = null;
                 }
             }
        }
         return (T[])copy;
     }
-
 }
