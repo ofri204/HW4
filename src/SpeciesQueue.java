@@ -1,4 +1,3 @@
-import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 
 /**
@@ -274,7 +273,7 @@ public class SpeciesQueue <T extends Comparable<T> > implements Iterable<T>, Clo
 
         //creating new queue
         int queueLen = this.queue.length;
-        Object[] copy = new Object[queueLen];
+        Object[] copy = new Comparable[queueLen];
 
         for(int i = 0; i < queueLen; i++){
             T element = this.queue[i];

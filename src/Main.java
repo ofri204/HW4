@@ -1,6 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        test_1();
+        //test_1();
         System.out.println("\n-------------------------\n");
         test_2();
         System.out.println("\n-------------------------\n");
@@ -29,7 +29,14 @@ public class Main {
         ark.add(new Snake());
         ark.add(new Lion());
         ark.add(new Tiger());
-        ark.add(new Lion());
+        ark.add(new Tiger());
+        ark.add(new Tiger());
+        ark.add(new Tiger());
+        ark.add(new Tiger());
+        ark.add(new Tiger());
+        ark.add(new Tiger());
+        ark.add(new Tiger());
+        ark.add(new Tiger());
 
 
         // Show the current state of the queue

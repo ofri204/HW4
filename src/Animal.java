@@ -50,4 +50,13 @@ public abstract class Animal implements Comparable<Animal>, Cloneable {
             return null;
         }
     }
+
+    /**
+     * Returns name of the animal (which is the name of the Dynamic class)
+     * @return name of animal
+     */
+    @Override
+    public String toString(){
+        return this.getClass().getName();
+    }
 }
