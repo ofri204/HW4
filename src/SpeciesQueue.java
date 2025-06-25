@@ -1,6 +1,4 @@
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.Iterator;
 
 /**
@@ -11,14 +9,18 @@ import java.util.Iterator;
  * @param <T> the type of elements held in this queue
  **/
 public class SpeciesQueue <T extends Comparable<T> > implements Iterable<T>, Cloneable{
+
     private T[] queue;
     private int count;
+
+    private static final int DEFAULT_QUEUE_SIZE = 10;
+    private static final int EXTEND_DEFAULT_SIZE = 2 ;
 
     /**
      * Constructs an empty SpeciesQueue with an initial size of 10.
      **/
     public SpeciesQueue() {
-        this.queue = (T[]) new Comparable[10];
+        this.queue = (T[]) new Comparable[ SpeciesQueue.DEFAULT_QUEUE_SIZE ];
         this.count = 0;
     }
 
@@ -77,8 +79,8 @@ public class SpeciesQueue <T extends Comparable<T> > implements Iterable<T>, Clo
      * Checks if the array needs to be expanded by 2 and does so if necessary
      **/
     private void arraySizeCheck() {
-        if (count == queue.length) {
-            expandArraySizeBy2();
+        if (this.count == this.queue.length) {
+            this.expandArraySizeBy2();
         }
     }
 
@@ -86,7 +88,7 @@ public class SpeciesQueue <T extends Comparable<T> > implements Iterable<T>, Clo
      * A helper method for the {@link #add} method
      * Finds the correct index that the element will be inserted into
      * Elements are inserted in descending dominance order,
-     * and elements from the same type are grouped together- in this case, the newest element is located first
+     * and elements from the same type are grouped together - in this case, the newest element is located first
      * among them
      *
      * @param type the element to insert
@@ -96,20 +98,20 @@ public class SpeciesQueue <T extends Comparable<T> > implements Iterable<T>, Clo
         int insertIdx = 0;
         int sameTypeStartIdx = -1;
 
-        while (insertIdx < count) {
-            T temp = queue[insertIdx];
+        while (insertIdx < this.count) {
+            T temp = this.queue[insertIdx];
+
             if (temp == null) {
                 break;
             }
-            int resultComparison = type.compareTo(temp);
 
+            int resultComparison = type.compareTo(temp);
             if (resultComparison > 0) {
                 break;
             } else if (resultComparison == 0 && type.getClass()==(temp.getClass())) {
                 sameTypeStartIdx = insertIdx;
                 break;
             }
-
             insertIdx++;
         }
 
@@ -139,8 +141,9 @@ public class SpeciesQueue <T extends Comparable<T> > implements Iterable<T>, Clo
      * Adds a new element to the queue in the correct position
      *
      * @param type the element to add
+     * @throws InvalidInputException if the input is null
      **/
-    public void add(T type) {
+    public void add(T type) throws InvalidInputException {
         validateInput(type);
         arraySizeCheck();
         int insertIdx = findInsertionIndex(type);
@@ -155,7 +158,7 @@ public class SpeciesQueue <T extends Comparable<T> > implements Iterable<T>, Clo
      * @return the new array
      */
     private T[] createDoubleSizedArray() {
-        return (T[]) new Comparable[queue.length * 2];
+        return (T[]) new Comparable[queue.length * SpeciesQueue.EXTEND_DEFAULT_SIZE];
     }
 
     /**
@@ -177,8 +180,6 @@ public class SpeciesQueue <T extends Comparable<T> > implements Iterable<T>, Clo
         T[] newQueue = createDoubleSizedArray();
         copyToTheNewArray(newQueue);
         queue = newQueue;
-
-
     }
 
     /**
@@ -196,7 +197,7 @@ public class SpeciesQueue <T extends Comparable<T> > implements Iterable<T>, Clo
      * changes the last element in the queue to null after removing an element
      * This method is called after shifting the elements to the left, in order to remove duplicate elements
      */
-    private void changeMostRightElementtoNull() {
+    private void changeMostRightElementNull() {
         queue[count - 1] = null;
     }
 
@@ -206,13 +207,13 @@ public class SpeciesQueue <T extends Comparable<T> > implements Iterable<T>, Clo
      * @return the first element in the queue
      * @throws EmptyQueueException if the queue is empty
      **/
-    public T remove() {
+    public T remove() throws EmptyQueueException {
         if (isEmpty()) {
             throw new EmptyQueueException();
         }
         T firstElement = queue[0];
         shiftElementsLeft();
-        changeMostRightElementtoNull();
+        changeMostRightElementNull();
         count--;
         return firstElement;
     }
@@ -226,42 +227,65 @@ public class SpeciesQueue <T extends Comparable<T> > implements Iterable<T>, Clo
         return count == 0;
     }
 
+    /**
+     * Returns the first element in the queue if exists
+     * @return the first element of {@code queue}
+     * @throws EmptyQueueException if the queue is empty
+     */
     public T peek() throws EmptyQueueException{
-        return this.queue[ queue.length - 1] ;
+        if( this.isEmpty()){
+            throw new EmptyQueueException();
+        }
+        return this.queue[ 0 ];
     }
 
+    /**Returns the size of the queue
+     * @return size of queue*/
     public int size(){
         return this.count;
     }
 
+    /**
+     * Cloning a SpeciesQueue to new instance
+     * @return null if {@code queue} has an object which is not cloneable, otherwise the copy of
+     * queue*/
     @Override
     public SpeciesQueue<T> clone() {
         try{
             SpeciesQueue<T> copy = (SpeciesQueue<T>)super.clone();
             copy.replaceQueue( this.queueCopy() );
             return copy;
-        } catch (ClassCastException | CloneNotSupportedException | NoSuchMethodException e  ){
+        } catch (Exception e){
             return null;
         }
     }
 
+    /**Replace the queue of the current Species queue to new one
+     * <br><b>Warning: this function is only for inner use of the {@link #clone()} function</b>
+     * @param newQueue a new queue*/
     private void replaceQueue(T[] newQueue){
         this.queue = newQueue;
     }
 
+    /**
+     * Copies the queue of the current SpeciesQueue
+     * @return a new queue  */
     private T[] queueCopy() throws CloneNotSupportedException, NoSuchMethodException {
 
+        //creating new queue
         int queueLen = this.queue.length;
-        Object[] copy = new Comparable[queueLen];
+        Object[] copy = new Object[queueLen];
 
         for(int i = 0; i < queueLen; i++){
             T element = this.queue[i];
+
+            //checks if the current none null element can be cloned
             if(element != null){
                 try{
                     T clonedElement = (T)(element.getClass().getMethod("clone").invoke(element));
                     copy[i] = clonedElement;
-                } catch (NoSuchMethodException | IllegalAccessException |
-                         InvocationTargetException e) {
+                } catch (Exception e) {
+                    //the element cannot be copied, so it will be null
                     copy[i] = null;
                 }
             }

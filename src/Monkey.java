@@ -3,7 +3,9 @@
  * with a fixed dominance level of 3.
  **/
 public class Monkey extends Animal {
+    private static final int DEFAULT_DOMINANCE_LEVEL =3;
+
     public Monkey() {
-        super(3);
+        super(Monkey.DEFAULT_DOMINANCE_LEVEL);
     }
 }

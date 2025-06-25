@@ -37,6 +37,10 @@ public abstract class Animal implements Comparable<Animal>, Cloneable {
         return this.getDominanceLevel()-other.getDominanceLevel();
     }
 
+    /**
+     * Clones the current animal if it is not null
+     * @return cloned animal
+     * @throws CloneNotSupportedException if the animal is */
     @Override
     public Animal clone() throws CloneNotSupportedException {
         try{
@@ -46,10 +50,4 @@ public abstract class Animal implements Comparable<Animal>, Cloneable {
             return null;
         }
     }
-
-    @Override
-    public String toString(){
-        return this.getClass().getName();
-    }
-
 }

@@ -4,6 +4,7 @@
  * based on their dominance level and type.
  **/
 public class Ark {
+
     private final SpeciesQueue<Animal> animalQueue;
     /**
      * Constructs a new empty Ark.
@@ -16,12 +17,14 @@ public class Ark {
      * Adds an animal to the ark's queue
      *
      * @param animal the animal to be added to the ark
-     * @throws InvalidInputException if the animal is null
      */
-    public void add(Animal animal) throws InvalidInputException {
-        animalQueue.add(animal);
+    public void add(Animal animal) {
+        if( animal != null ){
+            animalQueue.add(animal);
+        }
     }
 
+    /** Removes all animals from ark's queue */
     public void enterToArk() {
         if(this.isAnimalQueueNotEmpty()){
             Animal firstAnimalInQueue= animalQueue.remove();
@@ -29,14 +32,20 @@ public class Ark {
         }
     }
 
+    /**
+     * Checks if ark's queue isn't empty
+     * @return true if it isn't empty, false otherwise
+     * */
     private boolean isAnimalQueueNotEmpty(){ return !this.animalQueue.isEmpty(); }
 
+    /**Removes the first animal in the ark's queue*/
     public void enterAllToArk() {
         while(this.isAnimalQueueNotEmpty()){
             this.enterToArk();
         }
     }
 
+    /**Displays all animals which are in the ark's queue*/
     public void showQueue() {
         if( this.isAnimalQueueNotEmpty() ){
             StringBuilder queueStr = new StringBuilder();
